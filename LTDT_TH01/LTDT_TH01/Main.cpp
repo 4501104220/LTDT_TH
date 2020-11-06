@@ -11,23 +11,11 @@ struct Graph {
 	int _iSoDinh;
 	int a[_max][_max];
 };
-//Tao do thi trong filePath
-/*void createGraph(const string& filePath, Graph& g) {
-	std::ifstream f{ filePath };
-	if (f) {
-		f >> g._iSoDinh;
-		for (int i = 0; i < g._iSoDinh; i++)
-			for (int j = 0; j < g._iSoDinh; j++)
-				f >> g.a[i][j];
-	}
-	else
-		cerr << "Khong mo duoc file";
-}*/
-
+//Nhap do thi tu file test1.txt
 void createGraph(Graph& g) {
 	ifstream fcin;
-	fcin.open("text1.txt");
-	if (fcin) {
+	fcin.open("test1.txt");
+	if (fcin.is_open()) {
 		fcin >> g._iSoDinh;
 		for (int i = 0; i < g._iSoDinh; i++)
 			for (int j = 0; j < g._iSoDinh; j++)
@@ -36,9 +24,7 @@ void createGraph(Graph& g) {
 	}
 	else
 		cout << "Khong mo duoc file";
-	
 }
-
 //Kiem tra do thi co huong
 bool isDirectedGraph(const Graph& g) {
 	for (int i = 1; i < g._iSoDinh; i++)
@@ -61,9 +47,9 @@ int getSoCanh(const Graph& g) {
 	if (!isDirectedGraph(g)) return iSoCanh / 2;
 	return iSoCanh;
 }
-//
-std::vector<int> degArray(const Graph& g) {
-	std::vector<int> res(g._iSoDinh);
+//Tao mang cua dinh
+vector<int> degArray(const Graph& g) {
+	vector<int> res(g._iSoDinh);
 	if (isDirectedGraph(g)) {
 		for (int i = 0; i < g._iSoDinh; i++)
 			for (int j = 0; j < g._iSoDinh; j++)
@@ -71,22 +57,22 @@ std::vector<int> degArray(const Graph& g) {
 	}
 	else {
 		for (int i = 1; i < g._iSoDinh; i++)
-			for (int j = 0; j < i; j++)
-				res[i] += g.a[i][j], res[j] += g.a[i][j];
+			for (int j = 0; j < i; j++) {
+				res[i] += g.a[i][j];
+				res[j] += g.a[i][j];
+			}
 	}
 	return res;
 }
-
+//Ham main
 int main() {
 	Graph g;
-	string filePath;
-	cin >> filePath;
 	createGraph(g);
 	//Kiem tra tinh hop le cua do thi
 	cout << "Kiem tra tinh hop le do thi:\n";
 	cout << (validGraph(g) ? "Hop le\n" : "Khong hop le\n");
+	cout<<"Do thi " << (isDirectedGraph(g) ? "co" : "vo") << " huong\n";
 	if (validGraph(g)) {
-
 		cout << "So canh va so dinh cua do thi:\n";
 		//So canh cua do thi
 		cout << "So canh: " << getSoCanh(g) << "\n";
@@ -94,7 +80,9 @@ int main() {
 		cout << "So dinh: " << g._iSoDinh << "\n";
 		//Bac cua tat ca cac dinh
 		cout << "Xuat bac cua tat ca cac dinh:\n";
-		std::vector<int>degs = degArray(g);
+		vector<int>degs = degArray(g);
+		for (int i = 0; i < g._iSoDinh; i++)
+			cout << "Dinh thu " << i + 1 << " co bac la: " << degs[i] <<"\n";
 		//Dinh bac lon nhat
 		{
 			cout << "Dinh bac lon nhat: ";
@@ -120,8 +108,9 @@ int main() {
 					cout << i + 1 << ' ';
 					bFlag = true;
 				}
-			if (!bFlag) cout << "khong co.\n";
+			if (!bFlag) cout << "khong co.";
 		}
+		cout << '\n';
 		//Dinh bac chan
 		{
 			bool bFlag = false;
@@ -131,8 +120,9 @@ int main() {
 					cout << i + 1 << ' ';
 					bFlag = true;
 				}
-			if (!bFlag) cout << "khong co.\n";
+			if (!bFlag) cout << "khong co.";
 		}
+		cout << '\n';
 		//Dinh co lap
 		{
 			bool bFlag = false;
@@ -142,8 +132,9 @@ int main() {
 					cout << i + 1 << ' ';
 					bFlag = true;
 				}
-			if (!bFlag) cout << "khong co.\n";
+			if (!bFlag) cout << "khong co.";
 		}
+		cout << '\n';
 		//Dinh treo
 		{
 			bool bFlag = false;
@@ -153,7 +144,7 @@ int main() {
 					cout << i + 1 << ' ';
 					bFlag = true;
 				}
-			if (!bFlag) cout << "khong co.\n";
+			if (!bFlag) cout << "khong co.";
 		}
 	}
 }
