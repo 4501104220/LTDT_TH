@@ -38,8 +38,8 @@ void visit(const Graph& g, int i, int nLabel) {
 	}
 	delete queue;
 }
-void taoGraph(const string& duongDanFile, Graph& g) {
-	ifstream fcin;
+void taoGraph(const string& sFileInput, Graph& g) {
+	ifstream fcin{ sFileInput};
 	if (fcin.is_open()) {
 		fcin >> g._iSoDinh;
 		for (int i = 0; i < g._iSoDinh; i++)
@@ -64,37 +64,33 @@ void xetLienThong(const Graph&  g)
 			                                 // cho các đỉnh trong lần duyệt này
 		}
 }
-void inThanhPhanLienThong(const string& duongDanFile ,const Graph& g)
+void inThanhPhanLienThong(const string& sFileOutput,const Graph& g)
 {
-	ofstream fcout;
+	ofstream fcout{ sFileOutput};
     // in ra số miền liên thông
-	fcout << ((g_iSoMienLienThong > 1) ? "KHONG LIEN THONG" : "LIEN THONG") << '\n';
-	// dùng vòng for nMienLienThong từ 1 đến g_iSoMienLienThong
-	// để in ra từng miền liên thông
+	fcout << ((g_iSoMienLienThong > 1) ? "KHONG LIEN THONG\n" : "LIEN THONG\n");
+	// dùng vòng lặp từ 1 đến g_iSoMienLienThong để in ra từng miền liên thông
 	fcout << g_iSoMienLienThong << '\n';
 
 	for (int i = 1; i <= g_iSoMienLienThong; i++)
 	{
-		//f << "Mien lien thong thu "  <<  i<< '\n';
-		// xét tất cả các đỉnh, nếu có nhãn trùng với nMienLienThong, in ra
+		// xét tất cả các đỉnh, nếu có nhãn trùng với g_iSoMienLienThong thì in ra
 		for (int j = 0; j < g._iSoDinh; j++)
 			if (g_iVisited[j] == i) 
-				fcout << setw(4) << j;
-			
-		fcout <<  '\n';
+				fcout << j;	
+		fcout << '\n';
 	}
 	if (g_iSoMienLienThong > 1) 
-		fcout << "Can toi thieu " << g_iSoMienLienThong - 1 << " canh de do thi lien thong." << '\n';
-	
+		fcout << "Can toi thieu " << g_iSoMienLienThong - 1 << " canh de do thi lien thong.\n";
 	fcout.close();
 }
 int main() {
 	Graph g;
-	cout << "Nhap duong dan file input: ";
+	cout << "Nhap duong dan file input:";
 	string sFileInput;
 	cin >> sFileInput;
 	taoGraph(sFileInput, g);
-	cout << "Nhap duong dan tao file output: ";
+	cout << "Nhap duong dan file output:";
 	string sFileOutput;
 	cin >> sFileOutput;
 	xetLienThong(g);
