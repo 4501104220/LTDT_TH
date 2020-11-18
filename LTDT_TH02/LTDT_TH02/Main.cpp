@@ -6,6 +6,7 @@ using namespace std;
 #define _max 100
 int g_iVisited[_max];
 int g_iSoMienLienThong;
+int B[_max];
 
 struct Graph {
 	int _iSoDinh;
@@ -64,35 +65,69 @@ void xetLienThong(const Graph&  g)
 			                                 // cho các đỉnh trong lần duyệt này
 		}
 }
-void inThanhPhanLienThong(const string& sFileOutput,const Graph& g)
+void inThanhPhanLienThong(const string& sFileOutput, const Graph& g)
 {
-	ofstream fcout{ sFileOutput};
-    // in ra số miền liên thông
+	ofstream fcout{ sFileOutput };
+	// in ra số miền liên thông
 	fcout << ((g_iSoMienLienThong > 1) ? "KHONG LIEN THONG\n" : "LIEN THONG\n");
 	// dùng vòng lặp từ 1 đến g_iSoMienLienThong để in ra từng miền liên thông
+	fcout << "So mien lien thong: " << g_iSoMienLienThong << '\n';
 	fcout << g_iSoMienLienThong << '\n';
-
 	for (int i = 1; i <= g_iSoMienLienThong; i++)
 	{
+		fcout << "Mien lien thong thu " << i << ": ";
 		// xét tất cả các đỉnh, nếu có nhãn trùng với g_iSoMienLienThong thì in ra
 		for (int j = 0; j < g._iSoDinh; j++)
-			if (g_iVisited[j] == i) 
-				fcout << j;	
+			if (g_iVisited[j] == i)
+				fcout << j << " ";
 		fcout << '\n';
 	}
-	if (g_iSoMienLienThong > 1) 
+	if (g_iSoMienLienThong > 1)
 		fcout << "Can toi thieu " << g_iSoMienLienThong - 1 << " canh de do thi lien thong.\n";
 	fcout.close();
 }
+void xuatThanhPhanLienThong(const Graph& g)
+{
+	cout << ((g_iSoMienLienThong > 1) ? "KHONG LIEN THONG\n" : "LIEN THONG\n");
+	// dùng vòng lặp từ 1 đến g_iSoMienLienThong để in ra từng miền liên thông
+	cout << "So mien lien thong: " << g_iSoMienLienThong << '\n';
+	for (int i = 1; i <= g_iSoMienLienThong; i++)
+	{
+		cout << "Mien lien thong thu " << i << ": ";
+		// xét tất cả các đỉnh, nếu có nhãn trùng với g_iSoMienLienThong thì in ra
+		for (int j = 0; j < g._iSoDinh; j++)
+			if (g_iVisited[j] == i)
+				cout << j << " ";
+		cout << '\n';
+	}
+}
+void xetCanhDeDoThiLienThong(int temp, Graph g) {
+	for (int i = 0; i < g._iSoDinh; i++) {
+		if (g_iVisited[i] == temp + 1) {
+			B[temp] = i;
+			if (temp == g_iSoMienLienThong - 1) {
+				for (int j = 0; j <= temp; j++) {
+					cout << B[j];
+					if (j < temp) cout << " -> ";
+				}
+				cout << '\n';
+			}
+			else xetCanhDeDoThiLienThong(temp + 1, g);
+		}
+	}
+}
+void xuatCanhDeDoThiLienThong(Graph g) {
+	cout << "Can toi thieu " << g_iSoMienLienThong - 1 << " canh de do thi lien thong.\n";
+	cout << "Chon mot cap canh trong cac lua chon sau day de do thi lien thong:\n";
+	xetCanhDeDoThiLienThong(0, g);
+}
 int main() {
 	Graph g;
-	cout << "Nhap duong dan file input:";
-	string sFileInput;
-	cin >> sFileInput;
+	string sFileInput = "DoThi_TH02.txt";;
 	taoGraph(sFileInput, g);
-	cout << "Nhap duong dan file output:";
-	string sFileOutput;
-	cin >> sFileOutput;
+	string sFileOutput = "Xuat_DoThi_TH02.txt";
 	xetLienThong(g);
-	inThanhPhanLienThong(sFileOutput, g);
+    //inThanhPhanLienThong(sFileOutput, g);
+	xuatThanhPhanLienThong(g);
+	xuatCanhDeDoThiLienThong(g);
 }
