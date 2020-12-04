@@ -4,7 +4,7 @@ using namespace std;
 struct GRAPH
 {
 	int iSoDinh;//so dinh do thi
-	int a[100][100];//ma tran ke	
+	int iMaTran[100][100];//ma tran ke	
 	int visited[100]; //danh dau dinh i da xet hay chua, 0 la chua xet
 };
 struct CANH
@@ -23,7 +23,7 @@ void nhapMaTranKe(string duongdan, GRAPH& dt) {
 		inp >> dt.iSoDinh;
 		for (int i = 0; i < dt.iSoDinh; i++) {
 			for (int j = 0; j < dt.iSoDinh; j++) {
-				inp >> dt.a[i][j];
+				inp >> dt.iMaTran[i][j];
 			}
 		}
 		inp.close();
@@ -52,14 +52,14 @@ void Prim(char v, GRAPH g, bool type)
 			if (g.visited[i] == 0) //neu là dinh chua duyet. Ðieu kien dúng khi j thuoc tap Y hay V\Y
 			{
 				for (int j = 0; j < g.iSoDinh; j++)
-					if (g.visited[j] == 1 && (g.a[i][j] != 0))
+					if (g.visited[j] == 1 && (g.iMaTran[i][j] != 0))
 					{
-						if ((type == true && (tmp == -1 || g.a[i][j] < tmp)) || (type == false && (tmp == -1 || g.a[i][j] > tmp)))
+						if ((type == true && (tmp == -1 || g.iMaTran[i][j] < tmp)) || (type == false && (tmp == -1 || g.iMaTran[i][j] > tmp)))
 						{
-							tmp = g.a[i][j];
+							tmp = g.iMaTran[i][j];
 							canhnhonhat.u = i;
 							canhnhonhat.v = j;
-							canhnhonhat.trongso = g.a[i][j];
+							canhnhonhat.trongso = g.iMaTran[i][j];
 						}
 					}
 			}
